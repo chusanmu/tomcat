@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 
 
 /**
+ * TODO: 一个Host代表了一个虚拟主机
  * A <b>Host</b> is a Container that represents a virtual host in the
  * Catalina servlet engine.  It is useful in the following types of scenarios:
  * <ul>

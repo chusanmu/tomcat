@@ -81,6 +81,8 @@ final class StandardWrapperValve
 
 
     /**
+     * TODO: 去执行servlet以及filter,是在这里去执行的
+     *
      * Invoke the servlet we are managing, respecting the rules regarding
      * servlet lifecycle and SingleThreadModel support.
      *

@@ -42,6 +42,8 @@ public abstract class LifecycleBase implements Lifecycle {
 
 
     /**
+     * TODO: 存储了生命周期监听器
+     *
      * The list of registered LifecycleListeners for event notifications.
      */
     private final List<LifecycleListener> lifecycleListeners = new CopyOnWriteArrayList<>();
@@ -125,6 +127,10 @@ public abstract class LifecycleBase implements Lifecycle {
     }
 
 
+    /**
+     * TODO: 初始化方法, 很重要，各个组件都会调用它的init()方法，然后initInternal(); 方法交给具体的子类去实现，完成之后，会设置state状态为已初始化.
+     * @throws LifecycleException
+     */
     @Override
     public final synchronized void init() throws LifecycleException {
         if (!state.equals(LifecycleState.NEW)) {
@@ -132,8 +138,10 @@ public abstract class LifecycleBase implements Lifecycle {
         }
 
         try {
+            // TODO: 设置生命周期 为INITIALIZING
             setStateInternal(LifecycleState.INITIALIZING, null, false);
             initInternal();
+            // TODO: 初始化完之后，更改生命周期状态，改为INITIALIZED
             setStateInternal(LifecycleState.INITIALIZED, null, false);
         } catch (Throwable t) {
             handleSubClassException(t, "lifecycleBase.initFail", toString());
@@ -151,11 +159,13 @@ public abstract class LifecycleBase implements Lifecycle {
 
 
     /**
+     * TODO: start方法, 各个组件也会依次去调用它， start过程会去根据状态 调用不同的方法 ，例如 init() start() 等
+     *
      * {@inheritDoc}
      */
     @Override
     public final synchronized void start() throws LifecycleException {
-
+        // TODO: 这个state默认的状态就是NEW，服务开启的时候是NEW
         if (LifecycleState.STARTING_PREP.equals(state) || LifecycleState.STARTING.equals(state) ||
                 LifecycleState.STARTED.equals(state)) {
 
@@ -168,9 +178,11 @@ public abstract class LifecycleBase implements Lifecycle {
 
             return;
         }
-
+        // TODO: 如果state状态是NEW，那么开始调用init方法进行初始化
         if (state.equals(LifecycleState.NEW)) {
+            // TODO: 进行初始化
             init();
+            // TODO: 如果是关闭状态，就stop掉
         } else if (state.equals(LifecycleState.FAILED)) {
             stop();
         } else if (!state.equals(LifecycleState.INITIALIZED) &&
@@ -178,9 +190,12 @@ public abstract class LifecycleBase implements Lifecycle {
             invalidTransition(Lifecycle.BEFORE_START_EVENT);
         }
 
+        // TODO: 初始化完成之后，继续执行以下代码, 更改生命周期状态为 STARTING_PREP
         try {
             setStateInternal(LifecycleState.STARTING_PREP, null, false);
+            // TODO: 开始启动了, startInternal 这个方法也是个模板方法
             startInternal();
+            // TODO: 如果最后启动失败了，就调用stop
             if (state.equals(LifecycleState.FAILED)) {
                 // This is a 'controlled' failure. The component put itself into the
                 // FAILED state so call stop() to complete the clean-up.
@@ -190,6 +205,7 @@ public abstract class LifecycleBase implements Lifecycle {
                 // doing what they are supposed to.
                 invalidTransition(Lifecycle.AFTER_START_EVENT);
             } else {
+                // TODO: 如果没问题的话，就自动设置其生命周期状态为 STARTED , 表示启动成功.
                 setStateInternal(LifecycleState.STARTED, null, false);
             }
         } catch (Throwable t) {

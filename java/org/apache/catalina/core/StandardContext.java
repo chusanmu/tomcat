@@ -4910,6 +4910,7 @@ public class StandardContext extends ContainerBase
         }
 
         // Post work directory
+        // TODO: 发布工作目录
         postWorkDirectory();
 
         // Add missing components as necessary
@@ -5041,11 +5042,13 @@ public class StandardContext extends ContainerBase
                 }
 
                 // Notify our interested LifecycleListeners
+                // TODO: 告诉ContextConfig开始配置启动了
                 fireLifecycleEvent(Lifecycle.CONFIGURE_START_EVENT, null);
 
                 // Start our child containers, if not already started
                 for (Container child : findChildren()) {
                     if (!child.getState().isAvailable()) {
+                        // TODO: 调用Wrapper的start方法
                         child.start();
                     }
                 }
@@ -5122,9 +5125,11 @@ public class StandardContext extends ContainerBase
             mergeParameters();
 
             // Call ServletContainerInitializers
+            // TODO: 这地方很重要, 调用initializers 获取ServletContainerInitializer，spring boot的切入点 其实就是基于此
             for (Map.Entry<ServletContainerInitializer, Set<Class<?>>> entry :
                 initializers.entrySet()) {
                 try {
+                    // TODO: 挨个调用它的onStartup方法 进行初始化
                     entry.getKey().onStartup(entry.getValue(),
                             getServletContext());
                 } catch (ServletException e) {
@@ -6187,6 +6192,7 @@ public class StandardContext extends ContainerBase
 
         // Register the naming resources
         if (namingResources != null) {
+            // TODO: 初始化命名资源
             namingResources.init();
         }
 
@@ -6194,6 +6200,7 @@ public class StandardContext extends ContainerBase
         if (this.getObjectName() != null) {
             Notification notification = new Notification("j2ee.object.created",
                     this.getObjectName(), sequenceNumber.getAndIncrement());
+            // TODO: 发送广播通知
             broadcaster.sendNotification(notification);
         }
     }

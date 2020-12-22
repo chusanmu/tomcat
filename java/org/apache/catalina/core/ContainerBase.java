@@ -860,7 +860,9 @@ public abstract class ContainerBase extends LifecycleMBeanBase
 
     @Override
     protected void initInternal() throws LifecycleException {
+        // TODO: 创建了一个 线程执行器
         reconfigureStartStopExecutor(getStartStopThreads());
+        // TODO: 往上走 注册监听
         super.initInternal();
     }
 
@@ -903,14 +905,19 @@ public abstract class ContainerBase extends LifecycleMBeanBase
         }
 
         // Start our child containers, if any
+        // TODO: 对于Engine而言，它的children其实就是 Host
+        // TODO: 对于Host而言，它的children其实就是 Context
+        // TODO: 对于Context而言，它的children其实就是 StandardWrapper
         Container children[] = findChildren();
         List<Future<Void>> results = new ArrayList<>();
         for (Container child : children) {
+            // TODO: 这里使用了异步提交的方式，会去启动  host context等
             results.add(startStopExecutor.submit(new StartChild(child)));
         }
 
         MultiThrowable multiThrowable = null;
 
+        // TODO: 挨个遍历结果，等待执行完成
         for (Future<Void> result : results) {
             try {
                 result.get();

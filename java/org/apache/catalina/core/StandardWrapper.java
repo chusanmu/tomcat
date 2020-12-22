@@ -125,6 +125,7 @@ public class StandardWrapper extends ContainerBase
 
 
     /**
+     * TODO: 其实就是封装了一个servlet
      * The (single) possibly uninitialized instance of this servlet.
      */
     protected volatile Servlet instance = null;

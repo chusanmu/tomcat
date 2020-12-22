@@ -215,15 +215,20 @@ public class StandardService extends LifecycleMBeanBase implements Service {
     public void addConnector(Connector connector) {
 
         synchronized (connectorsLock) {
+            // TODO: connector设置service, 其实就是设置StandardService
             connector.setService(this);
+            // TODO: 已有的connectors个数加1
             Connector results[] = new Connector[connectors.length + 1];
+            // TODO: 然后进行拷贝 将结果拷贝到results中
             System.arraycopy(connectors, 0, results, 0, connectors.length);
             results[connectors.length] = connector;
             connectors = results;
         }
 
         try {
+            // TODO: 如果可以拿到这个connector，就开始启动了
             if (getState().isAvailable()) {
+                // TODO: 启动connector
                 connector.start();
             }
         } catch (LifecycleException e) {
@@ -411,12 +416,15 @@ public class StandardService extends LifecycleMBeanBase implements Service {
     @Override
     protected void startInternal() throws LifecycleException {
 
+        // TODO: 打印了个日志  Starting service [Tomcat]
         if(log.isInfoEnabled())
             log.info(sm.getString("standardService.start.name", this.name));
+        // TODO: 将状态改为启动中
         setState(LifecycleState.STARTING);
 
         // Start our defined Container first
         if (engine != null) {
+            // TODO: 开始启动 我们的 StandardEngine了
             synchronized (engine) {
                 engine.start();
             }
@@ -509,14 +517,16 @@ public class StandardService extends LifecycleMBeanBase implements Service {
      */
     @Override
     protected void initInternal() throws LifecycleException {
-
+        // TODO: 注册相关的监听
         super.initInternal();
 
+        // TODO: 我们的engine肯定不为空，是StandardEngine ，然后进行初始化它
         if (engine != null) {
             engine.init();
         }
 
         // Initialize any Executors
+        // TODO: 初始化线程执行器
         for (Executor executor : findExecutors()) {
             if (executor instanceof JmxEnabled) {
                 ((JmxEnabled) executor).setDomain(getDomain());
@@ -528,7 +538,9 @@ public class StandardService extends LifecycleMBeanBase implements Service {
         mapperListener.init();
 
         // Initialize our defined Connectors
+        // TODO: 开始初始化我们的Connector了
         synchronized (connectorsLock) {
+            // TODO: 逐个进行init初始化
             for (Connector connector : connectors) {
                 connector.init();
             }

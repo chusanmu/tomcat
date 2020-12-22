@@ -299,7 +299,9 @@ public class ContextConfig implements LifecycleListener {
         }
 
         // Process the event that has occurred
+        // TODO: 判断事件类型，如果是Configure_start_event，则直接调用configureStart()开始加载
         if (event.getType().equals(Lifecycle.CONFIGURE_START_EVENT)) {
+            // TODO: 开始配置web项目
             configureStart();
         } else if (event.getType().equals(Lifecycle.BEFORE_START_EVENT)) {
             beforeStart();
@@ -969,6 +971,9 @@ public class ContextConfig implements LifecycleListener {
 
 
     /**
+     * TODO: 大概分4个步骤，读取解析配置文件，也就是web.xml,找出带有注解的class(WebServlet, WebFilter,WebListener),合并，向standardContext中设置对应属性，包括创建和添加wrapper.
+     * TODO: 一个项目中有多个servlet，每个servlet要被wrapper管理，也就是一个servlet对应一个wrapper，这些wrapper还要被standardContext管理，故要将创建的wrapper作为子容器添加到standardContext中
+     *
      * Process a "contextConfig" event for this Context.
      */
     protected synchronized void configureStart() {
@@ -986,6 +991,7 @@ public class ContextConfig implements LifecycleListener {
                     Boolean.valueOf(context.getXmlNamespaceAware())));
         }
 
+        // TODO: 处理web.xml配置文件
         webConfig();
 
         if (!context.getIgnoreAnnotations()) {
@@ -1349,11 +1355,13 @@ public class ContextConfig implements LifecycleListener {
 
         // Step 3. Look for ServletContainerInitializer implementations
         if (ok) {
+            // TODO: 寻找ServletContainerInitializer 哈哈 spring的扩展点
             processServletContainerInitializers();
         }
 
         if (!webXml.isMetadataComplete() || typeInitializerMap.size() > 0) {
             // Steps 4 & 5.
+            // TODO: 处理带有注解的servlet
             processClasses(webXml, orderedFragments);
         }
 

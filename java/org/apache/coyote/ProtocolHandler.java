@@ -23,6 +23,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import org.apache.tomcat.util.net.SSLHostConfig;
 
 /**
+ * TODO: connector使用 ProtocolHandler 来处理请求，不同的ProtocolHandler代表了不同的链路类型
  * Abstract the protocol implementation, including threading, etc.
  *
  * This is the main interface to be implemented by a coyote protocol.
@@ -194,6 +195,7 @@ public interface ProtocolHandler {
 
 
     /**
+     * TODO: 创建 ProtocolHandler，http 1.1 ajp https
      * Create a new ProtocolHandler for the given protocol.
      * @param protocol the protocol
      * @param apr if <code>true</code> the APR protcol handler will be used
@@ -209,12 +211,14 @@ public interface ProtocolHandler {
     public static ProtocolHandler create(String protocol, boolean apr)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+        // TODO: 如果protocol为空，或者 为http1.1
         if (protocol == null || "HTTP/1.1".equals(protocol)
                 || (!apr && org.apache.coyote.http11.Http11NioProtocol.class.getName().equals(protocol))
                 || (apr && org.apache.coyote.http11.Http11AprProtocol.class.getName().equals(protocol))) {
             if (apr) {
                 return new org.apache.coyote.http11.Http11AprProtocol();
             } else {
+                // TODO: 其实一般返回给我们的是这个
                 return new org.apache.coyote.http11.Http11NioProtocol();
             }
         } else if ("AJP/1.3".equals(protocol)

@@ -49,6 +49,7 @@ import org.apache.tomcat.util.res.StringManager;
 
 
 /**
+ * TODO: 用于接受请求并将请求封装成Request和Response对象来处理
  * Implementation of a Coyote connector.
  *
  * @author Craig R. McClanahan
@@ -84,6 +85,7 @@ public class Connector extends LifecycleMBeanBase  {
                 AprLifecycleListener.getUseAprConnector();
         ProtocolHandler p = null;
         try {
+            // TODO: 根据不同的协议 创建不同的 ProtocolHandler
             p = ProtocolHandler.create(protocol, apr);
         } catch (Exception e) {
             log.error(sm.getString(
@@ -996,7 +998,7 @@ public class Connector extends LifecycleMBeanBase  {
 
     @Override
     protected void initInternal() throws LifecycleException {
-
+        // TODO: 注册监听
         super.initInternal();
 
         if (protocolHandler == null) {
@@ -1005,9 +1007,12 @@ public class Connector extends LifecycleMBeanBase  {
         }
 
         // Initialize adapter
+        // TODO: 初始化CoyoteAdapter，这个类很重要, 最终就是通过它来调用我们的service
         adapter = new CoyoteAdapter(this);
+        // TODO: protocolHandler, spring boot默认 Http11NioProtocol
         protocolHandler.setAdapter(adapter);
         if (service != null) {
+            // TODO: 将server的utilExecutor执行器拿过来，给设置到了 protocolHandler上
             protocolHandler.setUtilityExecutor(service.getServer().getUtilityExecutor());
         }
 
@@ -1036,6 +1041,7 @@ public class Connector extends LifecycleMBeanBase  {
         }
 
         try {
+            // TODO: 最后初始化 Http11NioProtocol
             protocolHandler.init();
         } catch (Exception e) {
             throw new LifecycleException(

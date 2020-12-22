@@ -54,6 +54,8 @@ import org.apache.tomcat.util.threads.TaskThreadFactory;
 import org.apache.tomcat.util.threads.ThreadPoolExecutor;
 
 /**
+ * TODO: 用来处理底层的socket连接
+ *
  * @param <S> The type used by the socket wrapper associated with this endpoint.
  *            May be the same as U.
  * @param <U> The type of the underlying socket used by this endpoint. May be
@@ -696,6 +698,7 @@ public abstract class AbstractEndpoint<S,U> {
 
     /**
      * Maximum amount of worker threads.
+     * TODO: 默认最大200个线程并发
      */
     private int maxThreads = 200;
     public void setMaxThreads(int maxThreads) {
@@ -917,10 +920,17 @@ public abstract class AbstractEndpoint<S,U> {
     }
 
 
+    /**
+     * TODO: 创建tomcat的运行线程，spring boot中默认最大是200个线程，去处理客户端的请求
+     */
     public void createExecutor() {
         internalExecutor = true;
+        // TODO: 这地方为什么要定义一个专门的taskQueue呢?
+        // TODO: 普通的线程池运行的时候，如果核心线程数满了，这时候，再来任务的时候，其实就会加到queue里面，它的策略其实是先把queue填满，再去创建线程，
+        // TODO: 而tomcat这地方定义了一个queue可以做到，任务过来的时候，优先创建线程去执行，而不是放到queue里面
         TaskQueue taskqueue = new TaskQueue();
         TaskThreadFactory tf = new TaskThreadFactory(getName() + "-exec-", daemon, getThreadPriority());
+        // TODO: 创建了一个线程池
         executor = new ThreadPoolExecutor(getMinSpareThreads(), getMaxThreads(), 60, TimeUnit.SECONDS,taskqueue, tf);
         taskqueue.setParent( (ThreadPoolExecutor) executor);
     }
@@ -1149,6 +1159,10 @@ public abstract class AbstractEndpoint<S,U> {
     }
 
 
+    /**
+     * TODO: 初始化endPoint
+     * @throws Exception
+     */
     public final void init() throws Exception {
         if (bindOnInit) {
             bindWithCleanup();
@@ -1227,17 +1241,23 @@ public abstract class AbstractEndpoint<S,U> {
             bindWithCleanup();
             bindState = BindState.BOUND_ON_START;
         }
+        // TODO: 调用startInternal，会添加一个任务Acceptor
         startInternal();
     }
 
 
+    /**
+     * TODO: 开启了一个acceptor线程
+     */
     protected void startAcceptorThread() {
         acceptor = new Acceptor<>(this);
         String threadName = getName() + "-Acceptor";
         acceptor.setThreadName(threadName);
         Thread t = new Thread(acceptor, threadName);
         t.setPriority(getAcceptorThreadPriority());
+        // TODO: 也是一个守护线程
         t.setDaemon(getDaemon());
+        // TODO: 开启acceptor线程
         t.start();
     }
 

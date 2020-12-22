@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.util.Collection;
 
 /**
+ * TODO: 封装了 content-type,表单提交时 的信息 multipart/form-data 信息
  * This class represents a part as uploaded to the server as part of a
  * <code>multipart/form-data</code> request body. The part may represent either
  * an uploaded file or form data.

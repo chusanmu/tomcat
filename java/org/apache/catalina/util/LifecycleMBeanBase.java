@@ -29,6 +29,9 @@ import org.apache.juli.logging.LogFactory;
 import org.apache.tomcat.util.modeler.Registry;
 import org.apache.tomcat.util.res.StringManager;
 
+/**
+ * TODO: 这个类和JMX监控有关
+ */
 public abstract class LifecycleMBeanBase extends LifecycleBase
         implements JmxEnabled {
 

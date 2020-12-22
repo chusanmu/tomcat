@@ -169,6 +169,7 @@ public class Nio2Endpoint extends AbstractJsseEndpoint<Nio2Channel,AsynchronousS
             }
 
             initializeConnectionLatch();
+            // TODO: 开启acceptor线程，接受请求
             startAcceptorThread();
         }
     }
@@ -178,6 +179,7 @@ public class Nio2Endpoint extends AbstractJsseEndpoint<Nio2Channel,AsynchronousS
         // Instead of starting a real acceptor thread, this will instead call
         // an asynchronous accept operation
         if (acceptor == null) {
+            // TODO: 创建了一个acceptor线程，用于接受请求
             acceptor = new Nio2Acceptor(this);
             acceptor.setThreadName(getName() + "-Acceptor");
         }

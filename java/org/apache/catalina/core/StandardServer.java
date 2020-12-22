@@ -918,14 +918,16 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
      */
     @Override
     protected void startInternal() throws LifecycleException {
-
+        // TODO: 传播生命周期事件
         fireLifecycleEvent(CONFIGURE_START_EVENT, null);
+        // TODO: 更改生命周期 为 启动中 starting...
         setState(LifecycleState.STARTING);
-
+        // TODO: 调用 NamingResourcesImpl
         globalNamingResources.start();
 
         // Start our defined Services
         synchronized (servicesLock) {
+            // TODO: 开始调用我们的service的start()方法了， StandardService
             for (Service service : services) {
                 service.start();
             }
@@ -998,16 +1000,20 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
     }
 
     /**
+     * TODO: 在进行初始化的时候，会由它的父类LifecycleBase进行调用
+     *
      * Invoke a pre-startup initialization. This is used to allow connectors
      * to bind to restricted ports under Unix operating environments.
      */
     @Override
     protected void initInternal() throws LifecycleException {
-
+        // TODO: 调用父类LifecycleMBeanBase，进行注册一些和监控相关的
         super.initInternal();
 
         // Initialize utility executor
+        // TODO: 初始化 utility 线程池
         reconfigureUtilityExecutor(getUtilityThreadsInternal(utilityThreads));
+        // TODO: 注册和线程池相关的监听
         register(utilityExecutor, "type=UtilityExecutor");
 
         // Register global String cache
@@ -1016,12 +1022,13 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
         // will be registered under multiple names
         onameStringCache = register(new StringCache(), "type=StringCache");
 
-        // Register the MBeanFactory
+        // Register the MBeanFactory 也是注册 监听相关
         MBeanFactory factory = new MBeanFactory();
         factory.setContainer(this);
         onameMBeanFactory = register(factory, "type=MBeanFactory");
 
         // Register the naming resources
+        // TODO: nameResources会继续向上回溯调用
         globalNamingResources.init();
 
         // Populate the extension validator with JARs from common and shared
@@ -1053,9 +1060,11 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
             }
         }
         // Initialize our defined Services
+        // TODO: 最后 初始化 我们定义的service喽，其实就是StandardService
         for (Service service : services) {
             service.init();
         }
+        // TODO: 最后初始化的是endPoint, 然后就逐次进行返回了
     }
 
     @Override

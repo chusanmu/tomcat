@@ -41,6 +41,7 @@ import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
 import org.apache.tomcat.util.http.CookieProcessor;
 
 /**
+ * TODO: 每个Context代表一个应用
  * A <b>Context</b> is a Container that represents a servlet context, and
  * therefore an individual web application, in the Catalina servlet engine.
  * It is therefore useful in almost every deployment of Catalina (even if a

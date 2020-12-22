@@ -20,6 +20,7 @@ import org.apache.catalina.connector.Connector;
 import org.apache.catalina.mapper.Mapper;
 
 /**
+ * TODO: Service将多个Connector组件绑定到一个Container上，service是堆外提供服务的
  * A <strong>Service</strong> is a group of one or more
  * <strong>Connectors</strong> that share a single <strong>Container</strong>
  * to process their incoming requests.  This arrangement allows, for example,

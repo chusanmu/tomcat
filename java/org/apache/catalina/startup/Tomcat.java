@@ -169,6 +169,9 @@ public class Tomcat {
 
     protected Server server;
 
+    /**
+     * TODO: 默认端口号 8080
+     */
     protected int port = 8080;
     protected String hostname = "localhost";
     protected String basedir;
@@ -477,6 +480,8 @@ public class Tomcat {
 
 
     /**
+     * TODO: 开启tomcat服务，spring boot项目中 就是直接调用了 tomcat#start()方法来开启服务的.
+     *
      * Start the server.
      *
      * @throws LifecycleException Start error
@@ -646,6 +651,7 @@ public class Tomcat {
      */
     public Server getServer() {
 
+        // TODO: 如果server已经设置过了，就直接返回了，否则下面会new 一个 StandardServer.
         if (server != null) {
             return server;
         }
@@ -661,8 +667,10 @@ public class Tomcat {
 
         server.setPort( -1 );
 
+        // TODO: 然后又创建了一个service
         Service service = new StandardService();
         service.setName("Tomcat");
+        // TODO: 将service添加到server下面
         server.addService(service);
         return server;
     }

@@ -120,6 +120,7 @@ import org.ietf.jgss.GSSCredential;
 import org.ietf.jgss.GSSException;
 
 /**
+ * TODO: 也是包装了一个request, coyote request
  * Wrapper object for the Coyote request.
  *
  * @author Remy Maucherat
@@ -151,6 +152,7 @@ public class Request implements HttpServletRequest {
 
 
     /**
+     * TODO: 真正的Request
      * Coyote request.
      */
     protected org.apache.coyote.Request coyoteRequest;
@@ -650,6 +652,7 @@ public class Request implements HttpServletRequest {
 
 
     /**
+     * TODO: 这个返回的是 RequestFacade
      * @return the <code>ServletRequest</code> for which this object
      * is the facade.  This method must be implemented by a subclass.
      */
@@ -686,6 +689,7 @@ public class Request implements HttpServletRequest {
 
 
     /**
+     * TODO: 持有的响应
      * The response with which this request is associated.
      */
     protected org.apache.catalina.connector.Response response = null;

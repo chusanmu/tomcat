@@ -17,6 +17,7 @@
 package org.apache.catalina;
 
 /**
+ * TODO: Engine用来管理多个虚拟主机，一个service只有一个engine
  * An <b>Engine</b> is a Container that represents the entire Catalina servlet
  * engine.  It is useful in the following types of scenarios:
  * <ul>

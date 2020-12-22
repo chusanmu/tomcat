@@ -38,6 +38,7 @@ import java.util.Map;
 public interface ServletRequest {
 
     /**
+     * 可以进行请求转发时，存一些值，之前jsp，servlet之间进行转发
      * Returns the value of the named attribute as an <code>Object</code>, or
      * <code>null</code> if no attribute of the given name exists.
      * <p>
@@ -64,6 +65,7 @@ public interface ServletRequest {
     public Object getAttribute(String name);
 
     /**
+     * TODO: 获得attribute的所有names
      * Returns an <code>Enumeration</code> containing the names of the
      * attributes available to this request. This method returns an empty
      * <code>Enumeration</code> if the request has no attributes available to
@@ -75,10 +77,12 @@ public interface ServletRequest {
     public Enumeration<String> getAttributeNames();
 
     /**
+     * TODO: 获得请求体中的编码格式
      * Returns the name of the character encoding used in the body of this
      * request. This method returns <code>null</code> if the no character
      * encoding has been specified. The following priority order is used to
      * determine the specified encoding:
+     * TODO: 这里维护了一个顺序
      * <ol>
      * <li>per request</li>
      * <li>web application default via the deployment descriptor or
@@ -93,6 +97,7 @@ public interface ServletRequest {
     public String getCharacterEncoding();
 
     /**
+     * TODO: 设置请求体编码格式
      * Overrides the name of the character encoding used in the body of this
      * request. This method must be called prior to reading request parameters
      * or reading input using getReader().
@@ -107,6 +112,7 @@ public interface ServletRequest {
             throws java.io.UnsupportedEncodingException;
 
     /**
+     * TODO: 返回请求体的长度，如果请求体的长度不知道或者长度大于Integer.MAX_VALUE ，就返回-1，注意是字节码的长度
      * Returns the length, in bytes, of the request body and made available by
      * the input stream, or -1 if the length is not known. For HTTP servlets,
      * same as the value of the CGI variable CONTENT_LENGTH.
@@ -117,6 +123,8 @@ public interface ServletRequest {
     public int getContentLength();
 
     /**
+     * TODO: 返回请求体的长度，只不过返回的是Long
+     *
      * Returns the length, in bytes, of the request body and made available by
      * the input stream, or -1 if the length is not known. For HTTP servlets,
      * same as the value of the CGI variable CONTENT_LENGTH.
@@ -128,6 +136,8 @@ public interface ServletRequest {
     public long getContentLengthLong();
 
     /**
+     * TODO: 返回请求体的Content-Type
+     *
      * Returns the MIME type of the body of the request, or <code>null</code> if
      * the type is not known. For HTTP servlets, same as the value of the CGI
      * variable CONTENT_TYPE.
@@ -138,6 +148,8 @@ public interface ServletRequest {
     public String getContentType();
 
     /**
+     * TODO: 尝试获取请求中的字节流, getReader也可以读取请求体
+     *
      * Retrieves the body of the request as binary data using a
      * {@link ServletInputStream}. Either this method or {@link #getReader} may
      * be called to read the body, not both.
@@ -153,6 +165,7 @@ public interface ServletRequest {
     public ServletInputStream getInputStream() throws IOException;
 
     /**
+     * TODO: 这个方法返回一个String返回值，可以取query, 或者是 form data里面的数据
      * Returns the value of a request parameter as a <code>String</code>, or
      * <code>null</code> if the parameter does not exist. Request parameters are
      * extra information sent with the request. For HTTP servlets, parameters
@@ -166,6 +179,7 @@ public interface ServletRequest {
      * is equal to the first value in the array returned by
      * <code>getParameterValues</code>.
      * <p>
+     *  TODO: 如果你读取的数据在请求体里面，那你就调用getInputStream() 或者是 getReader() 可以执行这两个方法
      * If the parameter data was sent in the request body, such as occurs with
      * an HTTP POST request, then reading the body directly via
      * {@link #getInputStream} or {@link #getReader} can interfere with the
@@ -180,6 +194,7 @@ public interface ServletRequest {
     public String getParameter(String name);
 
     /**
+     * TODO: 返回所有的 parameter  的names
      * Returns an <code>Enumeration</code> of <code>String</code> objects
      * containing the names of the parameters contained in this request. If the
      * request has no parameters, the method returns an empty
@@ -193,6 +208,8 @@ public interface ServletRequest {
     public Enumeration<String> getParameterNames();
 
     /**
+     * TODO: 通过name把所有的value取出来，如果不存在就返回null
+     *
      * Returns an array of <code>String</code> objects containing all of the
      * values the given request parameter has, or <code>null</code> if the
      * parameter does not exist.
@@ -209,6 +226,7 @@ public interface ServletRequest {
     public String[] getParameterValues(String name);
 
     /**
+     * TODO: 把 parameter 转为一个Map
      * Returns a java.util.Map of the parameters of this request. Request
      * parameters are extra information sent with the request. For HTTP
      * servlets, parameters are contained in the query string or posted form
@@ -222,6 +240,7 @@ public interface ServletRequest {
     public Map<String, String[]> getParameterMap();
 
     /**
+     * TODO: 返回协议，比如 HTTP/1.1
      * Returns the name and version of the protocol the request uses in the form
      * <i>protocol/majorVersion.minorVersion</i>, for example, HTTP/1.1. For
      * HTTP servlets, the value returned is the same as the value of the CGI
@@ -233,6 +252,8 @@ public interface ServletRequest {
     public String getProtocol();
 
     /**
+     * TODO: 拿到它的请求域，比如 http, https, ftp
+     *
      * Returns the name of the scheme used to make this request, for example,
      * <code>http</code>, <code>https</code>, or <code>ftp</code>. Different
      * schemes have different rules for constructing URLs, as noted in RFC 1738.
@@ -243,6 +264,7 @@ public interface ServletRequest {
     public String getScheme();
 
     /**
+     * TODO: 返回这个请求发送的服务端名称，比如，head中的host,或者serve name 或者 ip地址
      * Returns the host name of the server to which the request was sent. It is
      * the value of the part before ":" in the <code>Host</code> header value,
      * if any, or the resolved server name, or the server IP address.
@@ -252,6 +274,7 @@ public interface ServletRequest {
     public String getServerName();
 
     /**
+     * TODO: 当前request请求服务器的端口号
      * Returns the port number to which the request was sent. It is the value of
      * the part after ":" in the <code>Host</code> header value, if any, or the
      * server port where the client connection was accepted on.
@@ -261,6 +284,8 @@ public interface ServletRequest {
     public int getServerPort();
 
     /**
+     * TODO: 这个方法也是读取请求体的，只不过一般用的都是getInputStream();
+     * 这里的这个方法读取的是字符流
      * Retrieves the body of the request as character data using a
      * <code>BufferedReader</code>. The reader translates the character data
      * according to the character encoding used on the body. Either this method
@@ -280,6 +305,7 @@ public interface ServletRequest {
     public BufferedReader getReader() throws IOException;
 
     /**
+     * TODO: 返回client的地址或者是上个代理服务器的地址
      * Returns the Internet Protocol (IP) address of the client or last proxy
      * that sent the request. For HTTP servlets, same as the value of the CGI
      * variable <code>REMOTE_ADDR</code>.
@@ -290,6 +316,7 @@ public interface ServletRequest {
     public String getRemoteAddr();
 
     /**
+     * TODO: 返回客户端完整的名字或者是上个代理服务器的名称
      * Returns the fully qualified name of the client or the last proxy that
      * sent the request. If the engine cannot or chooses not to resolve the
      * hostname (to improve performance), this method returns the dotted-string
@@ -302,6 +329,7 @@ public interface ServletRequest {
     public String getRemoteHost();
 
     /**
+     * TODO: 设置请求属性值
      * Stores an attribute in this request. Attributes are reset between
      * requests. This method is most often used in conjunction with
      * {@link RequestDispatcher}.
@@ -327,6 +355,8 @@ public interface ServletRequest {
     public void setAttribute(String name, Object o);
 
     /**
+     * TODO: 移除请求属性值
+     *
      * Removes an attribute from this request. This method is not generally
      * needed as attributes only persist as long as the request is being
      * handled.
@@ -344,6 +374,8 @@ public interface ServletRequest {
     public void removeAttribute(String name);
 
     /**
+     * TODO: 返回本地化相关信息，用来做国际化相关的东西，客户端请求头里面如果有
+     * TODO: Accept-Language ，就用客户端传的，否则返回server端的Locale信息
      * Returns the preferred <code>Locale</code> that the client will accept
      * content in, based on the Accept-Language header. If the client request
      * doesn't provide an Accept-Language header, this method returns the
@@ -354,6 +386,8 @@ public interface ServletRequest {
     public Locale getLocale();
 
     /**
+     * todo: 如果客户端请求头中提供了Accept-Language, 如果是多个，这里全都返回，，如果没有提供，
+     * TODO: 则服务端仅返回一个
      * Returns an <code>Enumeration</code> of <code>Locale</code> objects
      * indicating, in decreasing order starting with the preferred locale, the
      * locales that are acceptable to the client based on the Accept-Language
@@ -367,6 +401,7 @@ public interface ServletRequest {
     public Enumeration<Locale> getLocales();
 
     /**
+     * TODO: 返回一个安全标识吧，比如HTTPS
      * Returns a boolean indicating whether this request was made using a secure
      * channel, such as HTTPS.
      *
@@ -413,6 +448,7 @@ public interface ServletRequest {
     public String getRealPath(String path);
 
     /**
+     * TODO: 返回客户端，或者代理层的 端口号
      * Returns the Internet Protocol (IP) source port of the client or last
      * proxy that sent the request.
      *
@@ -449,6 +485,8 @@ public interface ServletRequest {
      * @since Servlet 2.4
      */
     public int getLocalPort();
+
+    /* ---------------- servlet 3.0 新增的支持异步 -------------- */
 
     /**
      * @return TODO

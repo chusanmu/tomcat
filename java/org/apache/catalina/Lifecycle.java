@@ -18,6 +18,9 @@ package org.apache.catalina;
 
 
 /**
+ * TODO: 整个tomcat最为核心的一个接口，tomcat中所有的核心组件 基本上都是基于它, 整个生命周期转换图，
+ * TODO: 如下图所示，伴随着生命周期，tomcat还会触发一系列的事件
+ *
  * Common interface for component life cycle methods.  Catalina components
  * may implement this interface (as well as the appropriate interface(s) for
  * the functionality they support) in order to provide a consistent mechanism
@@ -200,6 +203,7 @@ public interface Lifecycle {
 
 
     /**
+     * TODO: 初始化方法
      * Prepare the component for starting. This method should perform any
      * initialization required post object creation. The following
      * {@link LifecycleEvent}s will be fired in the following order:
@@ -214,6 +218,7 @@ public interface Lifecycle {
     public void init() throws LifecycleException;
 
     /**
+     * TODO: 开启方法
      * Prepare for the beginning of active use of the public methods other than
      * property getters/setters and life cycle methods of this component. This
      * method should be called before any of the public methods other than

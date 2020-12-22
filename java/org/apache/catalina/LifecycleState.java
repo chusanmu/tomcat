@@ -21,6 +21,7 @@ package org.apache.catalina;
  * See {@link Lifecycle} for the state transition diagram.
  */
 public enum LifecycleState {
+    // TODO: 刚开始启动时为NEW
     NEW(false, null),
     INITIALIZING(false, Lifecycle.BEFORE_INIT_EVENT),
     INITIALIZED(false, Lifecycle.AFTER_INIT_EVENT),

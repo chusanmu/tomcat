@@ -239,11 +239,14 @@ public class StandardEngine extends ContainerBase implements Engine {
         // Ensure that a Realm is present before any attempt is made to start
         // one. This will create the default NullRealm if necessary.
         getRealm();
+        // TODO: 调用父类的initInternal方法
         super.initInternal();
     }
 
 
     /**
+     * TODO: start()时进行调用
+     *
      * Start this component and implement the requirements
      * of {@link org.apache.catalina.util.LifecycleBase#startInternal()}.
      *
@@ -255,6 +258,7 @@ public class StandardEngine extends ContainerBase implements Engine {
 
         // Log our server identification information
         if (log.isInfoEnabled()) {
+            // TODO: 打印日志，这里会把版本号啥的打印出来  Starting Servlet engine: [Apache Tomcat/9.0.27]
             log.info(sm.getString("standardEngine.start", ServerInfo.getServerInfo()));
         }
 

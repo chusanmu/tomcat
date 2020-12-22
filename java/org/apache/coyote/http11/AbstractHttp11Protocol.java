@@ -70,7 +70,7 @@ public abstract class AbstractHttp11Protocol<S> extends AbstractProtocol<S> {
         for (UpgradeProtocol upgradeProtocol : upgradeProtocols) {
             configureUpgradeProtocol(upgradeProtocol);
         }
-
+        // TODO: 接着往上初始化
         super.init();
     }
 

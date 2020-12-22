@@ -47,6 +47,8 @@ import org.apache.catalina.security.SecurityUtil;
 import org.apache.tomcat.util.res.StringManager;
 
 /**
+ * TODO: 门面类，包装了一个request, 所有的方法都委派到了这个包装request上
+ *
  * Facade class that wraps a Coyote request object.
  * All methods are delegated to the wrapped request.
  *
@@ -221,6 +223,7 @@ public class RequestFacade implements HttpServletRequest {
 
 
     /**
+     * 构造函数，入参传了个request
      * Construct a wrapper for the specified request.
      *
      * @param request The request to be wrapped
@@ -236,6 +239,8 @@ public class RequestFacade implements HttpServletRequest {
 
 
     /**
+     * 被包装的request
+     *
      * The wrapped request.
      */
     protected Request request = null;
@@ -270,6 +275,9 @@ public class RequestFacade implements HttpServletRequest {
 
     // ------------------------------------------------- ServletRequest Methods
 
+
+
+    /* ---------------- 实现接口的所有的方法全都委派到了被包装的request上，如果这个request == null, 将会抛出异常 -------------- */
 
     @Override
     public Object getAttribute(String name) {

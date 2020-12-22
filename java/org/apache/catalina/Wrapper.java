@@ -26,6 +26,8 @@ import javax.servlet.UnavailableException;
 
 
 /**
+ * TODO: 每个Wrapper封装着一个servlet
+ *
  * A <b>Wrapper</b> is a Container that represents an individual servlet
  * definition from the deployment descriptor of the web application.  It
  * provides a convenient mechanism to use Interceptors that see every single

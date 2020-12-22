@@ -37,6 +37,9 @@ public class ServletRequestWrapper implements ServletRequest {
     private static final ResourceBundle lStrings =
         ResourceBundle.getBundle(LSTRING_FILE);
 
+    /**
+     * TODO: 也是持有了一个包装，一个委派
+     */
     private ServletRequest request;
 
     /**

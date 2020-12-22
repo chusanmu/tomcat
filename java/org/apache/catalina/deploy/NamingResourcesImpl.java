@@ -956,6 +956,7 @@ public class NamingResourcesImpl extends LifecycleMBeanBase
 
     @Override
     protected void initInternal() throws LifecycleException {
+        // TODO: 调用父类注册相关的监听
         super.initInternal();
 
         // Set this before we register currently known naming resources to avoid
@@ -993,6 +994,7 @@ public class NamingResourcesImpl extends LifecycleMBeanBase
 
     @Override
     protected void startInternal() throws LifecycleException {
+        // TODO: 传播事件，然后更改它的状态为starting...
         fireLifecycleEvent(CONFIGURE_START_EVENT, null);
         setState(LifecycleState.STARTING);
     }

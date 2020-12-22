@@ -25,6 +25,7 @@ import org.apache.catalina.deploy.NamingResourcesImpl;
 import org.apache.catalina.startup.Catalina;
 
 /**
+ * TODO: Server接口，Tomcat最顶层容器，代表整个服务器，一个Tomcat只有一个server，整个tomcat的生命周期由server控制
  * A <code>Server</code> element represents the entire Catalina
  * servlet container.  Its attributes represent the characteristics of
  * the servlet container as a whole.  A <code>Server</code> may contain
@@ -69,6 +70,8 @@ public interface Server extends Lifecycle {
 
 
     /**
+     * TODO: 获取端口号
+     *
      * @return the port number we listen to for shutdown commands.
      *
      * @see #getPortOffset()
@@ -78,6 +81,8 @@ public interface Server extends Lifecycle {
 
 
     /**
+     * TODO: 设置端口号
+     *
      * Set the port number we listen to for shutdown commands.
      *
      * @param port The new port number

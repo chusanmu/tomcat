@@ -235,6 +235,7 @@ public interface RequestDispatcher {
     public static final String ERROR_STATUS_CODE = "javax.servlet.error.status_code";
 
     /**
+     * TODO: 请求转发，从一个servlet 到 另一个servlet 或者到 另一个jsp
      * Forwards a request from a servlet to another resource (servlet, JSP file,
      * or HTML file) on the server. This method allows one servlet to do
      * preliminary processing of a request and another resource to generate the

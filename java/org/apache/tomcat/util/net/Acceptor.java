@@ -35,6 +35,10 @@ public class Acceptor<U> implements Runnable {
     protected volatile AcceptorState state = AcceptorState.NEW;
 
 
+    /**
+     * TODO:  把endpoint拿过来了
+     * @param endpoint
+     */
     public Acceptor(AbstractEndpoint<?,U> endpoint) {
         this.endpoint = endpoint;
     }
@@ -61,18 +65,22 @@ public class Acceptor<U> implements Runnable {
         int errorDelay = 0;
 
         // Loop until we receive a shutdown command
+        // TODO: 当endpoint为运行时，去循环执行
         while (endpoint.isRunning()) {
 
             // Loop if endpoint is paused
+            // TODO: 如果endpoint已暂停 就不往下运行了
             while (endpoint.isPaused() && endpoint.isRunning()) {
                 state = AcceptorState.PAUSED;
                 try {
+                    // TODO: 每隔50ms去判断一次
                     Thread.sleep(50);
                 } catch (InterruptedException e) {
                     // Ignore
                 }
             }
 
+            // TODO: 如果关闭了endpoint 那直接退出
             if (!endpoint.isRunning()) {
                 break;
             }
@@ -84,6 +92,7 @@ public class Acceptor<U> implements Runnable {
 
                 // Endpoint might have been paused while waiting for latch
                 // If that is the case, don't accept new connections
+                // TODO: 如果已暂停，继续continue，到上个循环
                 if (endpoint.isPaused()) {
                     continue;
                 }
@@ -92,6 +101,8 @@ public class Acceptor<U> implements Runnable {
                 try {
                     // Accept the next incoming connection from the server
                     // socket
+                    // TODO: 从server 接受下一个进来的连接， 其实就是服务的serverChannel进行了accept 当然了
+                    //  这个方法是阻塞的，如果没有连接进来，那么这个acceptor线程就阻塞在这里了
                     socket = endpoint.serverSocketAccept();
                 } catch (Exception ioe) {
                     // We didn't get a socket
@@ -109,9 +120,11 @@ public class Acceptor<U> implements Runnable {
                 errorDelay = 0;
 
                 // Configure the socket
+                // TODO: 配置这个socket 前提是endpoint还运行着 并且 没有暂停
                 if (endpoint.isRunning() && !endpoint.isPaused()) {
                     // setSocketOptions() will hand the socket off to
                     // an appropriate processor if successful
+                    // TODO: 设置socket连接
                     if (!endpoint.setSocketOptions(socket)) {
                         endpoint.closeSocket(socket);
                     }

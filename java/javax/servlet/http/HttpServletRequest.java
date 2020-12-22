@@ -27,6 +27,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 
 /**
+ * TODO: 对 ServletRequest 进行扩展，从名字就可以看出来，和http相关
  * Extends the {@link javax.servlet.ServletRequest} interface to provide request
  * information for HTTP servlets.
  * <p>
@@ -55,6 +56,7 @@ public interface HttpServletRequest extends ServletRequest {
     public static final String DIGEST_AUTH = "DIGEST";
 
     /**
+     * TODO: 获取认证类型 支持 basic, form ,client 认证
      * Returns the name of the authentication scheme used to protect the
      * servlet. All servlet containers support basic, form and client
      * certificate authentication, and may additionally support digest
@@ -71,6 +73,7 @@ public interface HttpServletRequest extends ServletRequest {
     public String getAuthType();
 
     /**
+     * TODO: 获取客户端发过来的cookies信息，如果没有就发null过来
      * Returns an array containing all of the <code>Cookie</code> objects the
      * client sent with this request. This method returns <code>null</code> if
      * no cookies were sent.
@@ -81,6 +84,8 @@ public interface HttpServletRequest extends ServletRequest {
     public Cookie[] getCookies();
 
     /**
+     * TODO: 如果请求头中有Date类型的object，使用这个方法返回long类型的
+     *
      * Returns the value of the specified request header as a <code>long</code>
      * value that represents a <code>Date</code> object. Use this method with
      * headers that contain dates, such as <code>If-Modified-Since</code>.
@@ -104,6 +109,7 @@ public interface HttpServletRequest extends ServletRequest {
     public long getDateHeader(String name);
 
     /**
+     * TODO: 获取请求头中的值，给一个name，我返一个value
      * Returns the value of the specified request header as a
      * <code>String</code>. If the request did not include a header of the
      * specified name, this method returns <code>null</code>. If there are
@@ -120,6 +126,8 @@ public interface HttpServletRequest extends ServletRequest {
     public String getHeader(String name);
 
     /**
+     * TODO: 返回请求头中，一个name存在多个值的情况
+     *
      * Returns all the values of the specified request header as an
      * <code>Enumeration</code> of <code>String</code> objects.
      * <p>
@@ -141,6 +149,7 @@ public interface HttpServletRequest extends ServletRequest {
     public Enumeration<String> getHeaders(String name);
 
     /**
+     * TODO: 返回请求头中的所有名字
      * Returns an enumeration of all the header names this request contains. If
      * the request has no headers, this method returns an empty enumeration.
      * <p>
@@ -155,6 +164,8 @@ public interface HttpServletRequest extends ServletRequest {
     public Enumeration<String> getHeaderNames();
 
     /**
+     * TODO: 返回一个int值，如果没有，就返回-1，如果转不成int,那就报错
+     *
      * Returns the value of the specified request header as an <code>int</code>.
      * If the request does not have a header of the specified name, this method
      * returns -1. If the header cannot be converted to an integer, this method
@@ -198,6 +209,7 @@ public interface HttpServletRequest extends ServletRequest {
     }
 
     /**
+     * TODO: 获取http请求方法，get post put 等等
      * Returns the name of the HTTP method with which this request was made, for
      * example, GET, POST, or PUT. Same as the value of the CGI variable
      * REQUEST_METHOD.
@@ -272,6 +284,8 @@ public interface HttpServletRequest extends ServletRequest {
     public String getContextPath();
 
     /**
+     * TODO: 返回query string
+     *
      * Returns the query string that is contained in the request URL after the
      * path. This method returns <code>null</code> if the URL does not have a
      * query string. Same as the value of the CGI variable QUERY_STRING.
@@ -331,6 +345,7 @@ public interface HttpServletRequest extends ServletRequest {
     public String getRequestedSessionId();
 
     /**
+     * TODO: 返回一个uri，统一资源标识符
      * Returns the part of this request's URL from the protocol name up to the
      * query string in the first line of the HTTP request. The web container
      * does not decode this String. For example:
@@ -363,6 +378,10 @@ public interface HttpServletRequest extends ServletRequest {
     public String getRequestURI();
 
     /**
+     * TODO: 返回请求的全路径
+     * 包括 协议，server NAME， 端口号，服务端路径
+     * 但是不包括 query string 参数
+     *
      * Reconstructs the URL the client used to make the request. The returned
      * URL contains a protocol, server name, port number, and server path, but
      * it does not include query string parameters.
@@ -395,6 +414,7 @@ public interface HttpServletRequest extends ServletRequest {
     public String getServletPath();
 
     /**
+     * TODO: 返回session
      * Returns the current <code>HttpSession</code> associated with this request
      * or, if there is no current session and <code>create</code> is true,
      * returns a new session.
@@ -557,6 +577,8 @@ public interface HttpServletRequest extends ServletRequest {
             ServletException;
 
     /**
+     * TODO: 用来升级协议
+     *
      * Start the HTTP upgrade process and pass the connection to the provided
      * protocol handler once the current request/response pair has completed
      * processing. Calling this method sets the response status to {@link

@@ -27,6 +27,7 @@ import org.apache.juli.logging.Log;
 
 
 /**
+ * TODO: Container用于封装和管理servlet，处理用户的Servlet请求
  * A <b>Container</b> is an object that can execute requests received from
  * a client, and return responses based on those requests.  A Container may
  * optionally support a pipeline of Valves that process the request in an
