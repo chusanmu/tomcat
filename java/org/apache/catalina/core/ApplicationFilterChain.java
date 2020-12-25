@@ -36,6 +36,7 @@ import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.res.StringManager;
 
 /**
+ * TODO: 此类很重要，这个就是Filter过滤器链，这个Filter靠它串起来，此类中应用了典型的设计模式，责任链设计模式
  * Implementation of <code>javax.servlet.FilterChain</code> used to manage
  * the execution of a set of filters for a particular request.  When the
  * set of defined filters has all been executed, the next call to
@@ -75,6 +76,8 @@ public final class ApplicationFilterChain implements FilterChain {
 
 
     /**
+     * TODO: 代表了当前链的位置
+     *
      * The int which is used to maintain the current position
      * in the filter chain.
      */
@@ -82,12 +85,14 @@ public final class ApplicationFilterChain implements FilterChain {
 
 
     /**
+     * TODO: 代表了当前filter一共有多少个
      * The int which gives the current number of filters in the chain.
      */
     private int n = 0;
 
 
     /**
+     * TODO: 代表了servlet实例
      * The servlet instance to be executed by this chain.
      */
     private Servlet servlet = null;
@@ -163,18 +168,29 @@ public final class ApplicationFilterChain implements FilterChain {
                     throw new ServletException(e.getMessage(), e);
             }
         } else {
+            // TODO: 直接调用它的私有方法
             internalDoFilter(request,response);
         }
     }
 
+    /**
+     * TODO: 很重要的一个方法，所有的请求都会经过此方法，进行过滤器调用，以及servlet调用
+     * @param request
+     * @param response
+     * @throws IOException
+     * @throws ServletException
+     */
     private void internalDoFilter(ServletRequest request,
                                   ServletResponse response)
         throws IOException, ServletException {
 
         // Call the next filter if there is one
+        // TODO: 如果当前位置小于n，那么接着往下调用
         if (pos < n) {
+            // TODO: pos位置加一，拿到下一个filterConfig
             ApplicationFilterConfig filterConfig = filters[pos++];
             try {
+                // TODO: 拿到需要执行的Filter
                 Filter filter = filterConfig.getFilter();
 
                 if (request.isAsyncSupported() && "false".equalsIgnoreCase(
@@ -190,6 +206,7 @@ public final class ApplicationFilterChain implements FilterChain {
                     Object[] args = new Object[]{req, res, this};
                     SecurityUtil.doAsPrivilege ("doFilter", filter, classType, args, principal);
                 } else {
+                    // TODO: 直接执行filter的doFilter方法
                     filter.doFilter(request, response, this);
                 }
             } catch (IOException | ServletException | RuntimeException e) {
@@ -203,6 +220,7 @@ public final class ApplicationFilterChain implements FilterChain {
         }
 
         // We fell off the end of the chain -- call the servlet instance
+        // TODO: 所有的filter执行完毕之后，接下来就开始调用servlet实例了
         try {
             if (ApplicationDispatcher.WRAP_SAME_OBJECT) {
                 lastServicedRequest.set(request);
@@ -228,6 +246,7 @@ public final class ApplicationFilterChain implements FilterChain {
                                            args,
                                            principal);
             } else {
+                // TODO: 调用servlet实例的service方法
                 servlet.service(request, response);
             }
         } catch (IOException | ServletException | RuntimeException e) {

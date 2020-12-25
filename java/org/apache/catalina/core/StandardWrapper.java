@@ -83,12 +83,16 @@ public class StandardWrapper extends ContainerBase
 
 
     /**
+     * TODO: 创建一个wrapper
+     *
      * Create a new StandardWrapper component with the default basic Valve.
      */
     public StandardWrapper() {
 
         super();
+        // TODO: 绑定一个standardWrapperValue();
         swValve=new StandardWrapperValve();
+        // TODO: pipeline设置basic
         pipeline.setBasic(swValve);
         broadcaster = new NotificationBroadcasterSupport();
 

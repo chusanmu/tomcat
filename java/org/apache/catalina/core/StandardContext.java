@@ -2945,6 +2945,7 @@ public class StandardContext extends ContainerBase
 
 
     /**
+     * TODO: 向 filterDefs 中添加filter信息
      * Add a filter definition to this Context.
      *
      * @param filterDef The filter definition to be added
@@ -2980,6 +2981,7 @@ public class StandardContext extends ContainerBase
 
 
     /**
+     * TODO: 添加filter
      * Add a filter mapping to this Context before the mappings defined in the
      * deployment descriptor but after any other mappings added via this method.
      *
@@ -2993,6 +2995,7 @@ public class StandardContext extends ContainerBase
     public void addFilterMapBefore(FilterMap filterMap) {
         validateFilterMap(filterMap);
         // Add this filter mapping to our registered set
+        // TODO: 添加filter, 之后会利用filterMaps来创建filterChain
         filterMaps.addBefore(filterMap);
         fireContainerEvent("addFilterMap", filterMap);
     }
@@ -3273,6 +3276,7 @@ public class StandardContext extends ContainerBase
 
 
     /**
+     *  TODO: 工厂方法去创建一个新的wrapper实例
      * Factory method to create and return a new Wrapper instance, of
      * the Java implementation class appropriate for this Context
      * implementation.  The constructor of the instantiated Wrapper
@@ -3282,6 +3286,7 @@ public class StandardContext extends ContainerBase
     public Wrapper createWrapper() {
 
         Wrapper wrapper = null;
+        // TODO: 如果你指定了wrapperClass，那么就根据你指定的进行创建，否则创建一个StandardWrapper
         if (wrapperClass != null) {
             try {
                 wrapper = (Wrapper) wrapperClass.getConstructor().newInstance();
@@ -3297,6 +3302,7 @@ public class StandardContext extends ContainerBase
         synchronized (wrapperLifecyclesLock) {
             for (String wrapperLifecycle : wrapperLifecycles) {
                 try {
+                    // TODO: 给wrapper添加 LifecycleListener
                     Class<?> clazz = Class.forName(wrapperLifecycle);
                     LifecycleListener listener =
                             (LifecycleListener) clazz.getConstructor().newInstance();
@@ -3312,6 +3318,7 @@ public class StandardContext extends ContainerBase
         synchronized (wrapperListenersLock) {
             for (String wrapperListener : wrapperListeners) {
                 try {
+                    // TODO: 给wrapper添加 LifecycleListener
                     Class<?> clazz = Class.forName(wrapperListener);
                     ContainerListener listener =
                             (ContainerListener) clazz.getConstructor().newInstance();
@@ -4524,6 +4531,7 @@ public class StandardContext extends ContainerBase
                     getLogger().debug(" Starting filter '" + name + "'");
                 }
                 try {
+                    // TODO: 每一个filter对应创建一个ApplicationFilterConfig，放到filterConfigs map中
                     ApplicationFilterConfig filterConfig =
                             new ApplicationFilterConfig(this, entry.getValue());
                     filterConfigs.put(name, filterConfig);
@@ -5167,6 +5175,7 @@ public class StandardContext extends ContainerBase
 
             // Configure and call application filters
             if (ok) {
+                // TODO: 配置filter
                 if (!filterStart()) {
                     log.error(sm.getString("standardContext.filterFail"));
                     ok = false;

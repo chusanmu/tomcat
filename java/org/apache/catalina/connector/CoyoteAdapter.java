@@ -296,6 +296,14 @@ public class CoyoteAdapter implements Adapter {
     }
 
 
+    /**
+     * service 会逐层往下调用容器, 直至servlet
+     *
+     * @param req The request object
+     * @param res The response object
+     *
+     * @throws Exception
+     */
     @Override
     public void service(org.apache.coyote.Request req, org.apache.coyote.Response res)
             throws Exception {
@@ -305,12 +313,15 @@ public class CoyoteAdapter implements Adapter {
 
         if (request == null) {
             // Create objects
+            // TODO: 直接创建一个request对象
             request = connector.createRequest();
             request.setCoyoteRequest(req);
+            // TODO: 创建一个response
             response = connector.createResponse();
             response.setCoyoteResponse(res);
 
             // Link objects
+            // TODO: 将request和response进行关联
             request.setResponse(response);
             response.setRequest(request);
 
@@ -340,6 +351,7 @@ public class CoyoteAdapter implements Adapter {
                 request.setAsyncSupported(
                         connector.getService().getContainer().getPipeline().isAsyncSupported());
                 // Calling the container
+                // TODO: 调用容器，会逐层往下调用，直到调用到servlet进行处理请求
                 connector.getService().getContainer().getPipeline().getFirst().invoke(
                         request, response);
             }

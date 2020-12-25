@@ -589,7 +589,7 @@ public abstract class AbstractProtocol<S> implements ProtocolHandler,
             getLog().info(sm.getString("abstractProtocolHandler.start", getName()));
             logPortOffset();
         }
-
+        // TODO: 启动endpoint端点
         endpoint.start();
         monitorFuture = getUtilityExecutor().scheduleWithFixedDelay(
                 new Runnable() {
@@ -763,6 +763,13 @@ public abstract class AbstractProtocol<S> implements ProtocolHandler,
         }
 
 
+        /**
+         * TODO: 处理socket
+         * @param wrapper
+         * @param status The current socket status
+         *
+         * @return
+         */
         @Override
         public SocketState process(SocketWrapperBase<S> wrapper, SocketEvent status) {
             if (getLog().isDebugEnabled()) {

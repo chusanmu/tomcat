@@ -1067,6 +1067,7 @@ public class Connector extends LifecycleMBeanBase  {
         setState(LifecycleState.STARTING);
 
         try {
+            // TODO: 启动协议处理程序
             protocolHandler.start();
         } catch (Exception e) {
             throw new LifecycleException(

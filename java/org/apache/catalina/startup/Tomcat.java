@@ -173,6 +173,9 @@ public class Tomcat {
      * TODO: 默认端口号 8080
      */
     protected int port = 8080;
+    /**
+     * TODO: 默认的hostname
+     */
     protected String hostname = "localhost";
     protected String basedir;
 
@@ -615,7 +618,12 @@ public class Tomcat {
         }
     }
 
+    /**
+     * TODO: 如果不存在host, 则创建出来一个默认的host，默认的name为localhost
+     * @return
+     */
     public Host getHost() {
+        // TODO: 拿到 engine
         Engine engine = getEngine();
         if (engine.findChildren().length > 0) {
             return (Host) engine.findChildren()[0];
@@ -628,6 +636,7 @@ public class Tomcat {
     }
 
     /**
+     * TODO: 利用getServer() 拿到service 通过service.getContainer拿到engine,如果不存在就要创建出来一个新的了
      * Access to the engine, for further customization.
      * @return The engine
      */
@@ -638,8 +647,10 @@ public class Tomcat {
         }
         Engine engine = new StandardEngine();
         engine.setName( "Tomcat" );
+        // TODO: 默认是localhost
         engine.setDefaultHost(hostname);
         engine.setRealm(createDefaultRealm());
+        // TODO: 把创建的engine添加到service中
         service.setContainer(engine);
         return engine;
     }
@@ -658,6 +669,7 @@ public class Tomcat {
 
         System.setProperty("catalina.useNaming", "false");
 
+        // TODO: 创建一个标准的standardServer
         server = new StandardServer();
 
         initBaseDir();
@@ -699,12 +711,14 @@ public class Tomcat {
     public Context addContext(Host host, String contextPath, String contextName,
             String dir) {
         silence(host, contextName);
+        // TODO: 获取一个standardContext
         Context ctx = createContext(host, contextPath);
         ctx.setName(contextName);
         ctx.setPath(contextPath);
         ctx.setDocBase(dir);
         ctx.addLifecycleListener(new FixContextListener());
 
+        // TODO: 将context放置host中
         if (host == null) {
             getHost().addChild(ctx);
         } else {

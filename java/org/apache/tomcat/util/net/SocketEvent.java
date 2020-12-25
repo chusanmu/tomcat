@@ -24,11 +24,14 @@ package org.apache.tomcat.util.net;
 public enum SocketEvent {
 
     /**
+     * TODO: 数据可读
+     *
      * Data is available to be read.
      */
     OPEN_READ,
 
     /**
+     * TODO: 写出事件
      * The socket is ready to be written to.
      */
     OPEN_WRITE,

@@ -1102,13 +1102,16 @@ public abstract class AbstractEndpoint<S,U> {
             if (processorCache != null) {
                 sc = processorCache.pop();
             }
+            // TODO: 如果SocketProcessor 为空，就去创建一个
             if (sc == null) {
                 sc = createSocketProcessor(socketWrapper, event);
             } else {
                 sc.reset(socketWrapper, event);
             }
+            // TODO: 拿到tomcat处理socket的线程池， exec-xx 这个线程池
             Executor executor = getExecutor();
             if (dispatch && executor != null) {
+                // TODO: 利用线程池去处理 SocketProcessor
                 executor.execute(sc);
             } else {
                 sc.run();

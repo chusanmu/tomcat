@@ -802,6 +802,7 @@ public class ApplicationContext implements ServletContext {
         if (filterDef == null) {
             filterDef = new FilterDef();
             filterDef.setFilterName(filterName);
+            // TODO: 添加filter信息
             context.addFilterDef(filterDef);
         } else {
             if (filterDef.getFilterName() != null &&
@@ -901,9 +902,19 @@ public class ApplicationContext implements ServletContext {
     }
 
 
+    /**
+     * TODO: 添加servlet
+     *
+     * @param servletName
+     * @param servletClass
+     * @param servlet
+     * @param initParams
+     * @return
+     * @throws IllegalStateException
+     */
     private ServletRegistration.Dynamic addServlet(String servletName, String servletClass,
             Servlet servlet, Map<String,String> initParams) throws IllegalStateException {
-
+        // TODO: 如果servletName为空，直接报出异常
         if (servletName == null || servletName.equals("")) {
             throw new IllegalArgumentException(sm.getString(
                     "applicationContext.invalidServletName", servletName));
@@ -916,13 +927,16 @@ public class ApplicationContext implements ServletContext {
                             getContextPath()));
         }
 
+        // TODO: 根据当前传的servletName拿到它的wrapper
         Wrapper wrapper = (Wrapper) context.findChild(servletName);
 
         // Assume a 'complete' ServletRegistration is one that has a class and
         // a name
+        // TODO: 如果wrapper为空，就创建一个新的wrapper
         if (wrapper == null) {
             wrapper = context.createWrapper();
             wrapper.setName(servletName);
+            // TODO: 将创建的wrapper加到context的child中
             context.addChild(wrapper);
         } else {
             if (wrapper.getName() != null &&

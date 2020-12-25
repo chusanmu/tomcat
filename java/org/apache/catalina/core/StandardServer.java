@@ -506,14 +506,17 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
     @Override
     public void addService(Service service) {
 
+        // TODO: 将service绑定到当前的server
         service.setServer(this);
 
+        // TODO: 注意进行同步，然后创建一个数组，将添加进来的service放到了最后，最后进行复制数组
         synchronized (servicesLock) {
             Service results[] = new Service[services.length + 1];
             System.arraycopy(services, 0, results, 0, services.length);
             results[services.length] = service;
             services = results;
 
+            // TODO: 如果当前正在启动，然后启动service
             if (getState().isAvailable()) {
                 try {
                     service.start();

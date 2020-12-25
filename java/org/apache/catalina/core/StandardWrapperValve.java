@@ -54,6 +54,7 @@ final class StandardWrapperValve
 
     //------------------------------------------------------ Constructor
     public StandardWrapperValve() {
+        // TODO: 支持异步
         super(true);
     }
 
@@ -101,6 +102,7 @@ final class StandardWrapperValve
         Throwable throwable = null;
         // This should be a Request attribute...
         long t1=System.currentTimeMillis();
+        // TODO: 记录请求次数
         requestCount.incrementAndGet();
         StandardWrapper wrapper = (StandardWrapper) getContainer();
         Servlet servlet = null;
@@ -172,6 +174,7 @@ final class StandardWrapperValve
         request.setAttribute(Globals.DISPATCHER_REQUEST_PATH_ATTR,
                 requestPathMB);
         // Create the filter chain for this request
+        // TODO: 创建过滤器链, 这个请求会依次经过所有的过滤器链
         ApplicationFilterChain filterChain =
                 ApplicationFilterFactory.createFilterChain(request, wrapper, servlet);
 
@@ -200,6 +203,7 @@ final class StandardWrapperValve
                     if (request.isAsyncDispatching()) {
                         request.getAsyncContextInternal().doInternalDispatch();
                     } else {
+                        // TODO: 挨个执行过滤器链中的每一个Filter, 最后执行完毕之后，会调用servlet的service方法
                         filterChain.doFilter
                             (request.getRequest(), response.getResponse());
                     }

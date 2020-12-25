@@ -58,6 +58,7 @@ public final class ApplicationFilterFactory {
             return null;
 
         // Create and initialize a filter chain object
+        // TODO: 创建ApplicationFilterChain， 应用过滤器链
         ApplicationFilterChain filterChain = null;
         if (request instanceof Request) {
             Request req = (Request) request;
@@ -75,7 +76,7 @@ public final class ApplicationFilterFactory {
             // Request dispatcher in use
             filterChain = new ApplicationFilterChain();
         }
-
+        // TODO: 设置过滤器链对应的servlet
         filterChain.setServlet(servlet);
         filterChain.setServletSupportsAsync(wrapper.isAsyncSupported());
 
@@ -100,6 +101,7 @@ public final class ApplicationFilterFactory {
         String servletName = wrapper.getName();
 
         // Add the relevant path-mapped filters to this filter chain
+        // TODO: 将 过滤路径 匹配的filter 添加到过滤器链中
         for (FilterMap filterMap : filterMaps) {
             if (!matchDispatcher(filterMap, dispatcher)) {
                 continue;
