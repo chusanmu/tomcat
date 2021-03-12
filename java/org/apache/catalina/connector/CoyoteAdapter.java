@@ -382,6 +382,7 @@ public class CoyoteAdapter implements Adapter {
                     request.getAsyncContextInternal().setErrorState(throwable, true);
                 }
             } else {
+                // TODO: 关闭输入输出流
                 request.finishRequest();
                 response.finishResponse();
             }

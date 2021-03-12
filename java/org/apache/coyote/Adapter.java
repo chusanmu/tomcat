@@ -28,6 +28,7 @@ import org.apache.tomcat.util.net.SocketEvent;
 public interface Adapter {
 
     /**
+     * TODO: 执行service方法，会逐层的往下执行
      * Call the service method, and notify all listeners
      *
      * @param req The request object

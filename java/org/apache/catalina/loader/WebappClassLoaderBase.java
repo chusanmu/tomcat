@@ -1226,6 +1226,7 @@ public abstract class WebappClassLoaderBase extends URLClassLoader
             checkStateForClassLoading(name);
 
             // (0) Check our previously loaded local class cache
+            // TODO: 从当前classLoader的本地缓存中去拿，如果不为空，则返回
             clazz = findLoadedClass0(name);
             if (clazz != null) {
                 if (log.isDebugEnabled())
@@ -1236,6 +1237,7 @@ public abstract class WebappClassLoaderBase extends URLClassLoader
             }
 
             // (0.1) Check our previously loaded class cache
+            // TODO: 查看JVM是否已经加载过此类了，如果不为空则返回
             clazz = JreCompat.isGraalAvailable() ? null : findLoadedClass(name);
             if (clazz != null) {
                 if (log.isDebugEnabled())
@@ -1248,6 +1250,7 @@ public abstract class WebappClassLoaderBase extends URLClassLoader
             // (0.2) Try loading the class with the system class loader, to prevent
             //       the webapp from overriding Java SE classes. This implements
             //       SRV.10.7.2
+            // TODO: 尝试使用系统的类加载器加载此类
             String resourceName = binaryNameToPath(name, false);
 
             ClassLoader javaseLoader = getJavaseClassLoader();
@@ -1306,7 +1309,7 @@ public abstract class WebappClassLoaderBase extends URLClassLoader
                     }
                 }
             }
-
+            // TODO: 判断是否需要委托给父类加载器去加载，一般结果为delegateLoad
             boolean delegateLoad = delegate || filter(name, true);
 
             // (1) Delegate to our parent if requested
@@ -1328,6 +1331,7 @@ public abstract class WebappClassLoaderBase extends URLClassLoader
             }
 
             // (2) Search local repositories
+            // TODO: 调用findClass方法在webApp级别进行查找
             if (log.isDebugEnabled())
                 log.debug("  Searching local repositories");
             try {
@@ -1344,6 +1348,7 @@ public abstract class WebappClassLoaderBase extends URLClassLoader
             }
 
             // (3) Delegate to parent unconditionally
+            // TODO: 如果还是没有加载到类，并且不采用委托机制的话，则通过父类加载器去加载。
             if (!delegateLoad) {
                 if (log.isDebugEnabled())
                     log.debug("  Delegating to parent classloader at end: " + parent);
@@ -1361,7 +1366,7 @@ public abstract class WebappClassLoaderBase extends URLClassLoader
                 }
             }
         }
-
+        // TODO: 最后真找不到，就抛异常吧
         throw new ClassNotFoundException(name);
     }
 
@@ -1521,12 +1526,15 @@ public abstract class WebappClassLoaderBase extends URLClassLoader
 
         state = LifecycleState.STARTING_PREP;
 
+        // TODO: 获取当前应用下面的所有的class，以及lib下面的所有的jar
+
         WebResource[] classesResources = resources.getResources("/WEB-INF/classes");
         for (WebResource classes : classesResources) {
             if (classes.isDirectory() && classes.canRead()) {
                 localRepositories.add(classes.getURL());
             }
         }
+        // TODO: 获取WEB-INF/lib下面的所有的jar
         WebResource[] jars = resources.listResources("/WEB-INF/lib");
         for (WebResource jar : jars) {
             if (jar.getName().endsWith(".jar") && jar.isFile() && jar.canRead()) {

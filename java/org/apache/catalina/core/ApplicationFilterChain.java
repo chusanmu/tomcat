@@ -99,6 +99,8 @@ public final class ApplicationFilterChain implements FilterChain {
 
 
     /**
+     * TODO: 关联的这个servlet实例 是否支持异步处理
+     *
      * Does the associated servlet instance support async processing?
      */
     private boolean servletSupportsAsync = false;

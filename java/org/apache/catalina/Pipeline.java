@@ -19,6 +19,7 @@ package org.apache.catalina;
 import java.util.Set;
 
 /**
+ * TODO: pipeline 一个 container 绑了一个pipeline
  * <p>Interface describing a collection of Valves that should be executed
  * in sequence when the <code>invoke()</code> method is invoked.  It is
  * required that a Valve somewhere in the pipeline (usually the last one)

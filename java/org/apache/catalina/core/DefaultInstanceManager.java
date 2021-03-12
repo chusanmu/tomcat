@@ -505,6 +505,7 @@ public class DefaultInstanceManager implements InstanceManager {
     protected Class<?> loadClassMaybePrivileged(final String className,
             final ClassLoader classLoader) throws ClassNotFoundException {
         Class<?> clazz;
+        // TODO: 判断是否开启了安全机制
         if (SecurityUtil.isPackageProtectionEnabled()) {
             try {
                 clazz = AccessController.doPrivileged(
@@ -517,6 +518,7 @@ public class DefaultInstanceManager implements InstanceManager {
                 throw new RuntimeException(t);
             }
         } else {
+            // TODO: 使用loadClass方法进行加载
             clazz = loadClass(className, classLoader);
         }
         checkAccess(clazz);
@@ -525,10 +527,12 @@ public class DefaultInstanceManager implements InstanceManager {
 
     protected Class<?> loadClass(String className, ClassLoader classLoader)
             throws ClassNotFoundException {
+        // TODO: 判断类的全名开头是否是org.apache.catalina 如果是 采用 containerClassLoader 去加载
         if (className.startsWith("org.apache.catalina")) {
             return containerClassLoader.loadClass(className);
         }
         try {
+            // TODO: 否则尝试使用 containerClassLoader 去加载，判断其超类是否是 ContainerServlet，如果是则返回
             Class<?> clazz = containerClassLoader.loadClass(className);
             if (ContainerServlet.class.isAssignableFrom(clazz)) {
                 return clazz;
@@ -536,6 +540,7 @@ public class DefaultInstanceManager implements InstanceManager {
         } catch (Throwable t) {
             ExceptionUtils.handleThrowable(t);
         }
+        // TODO: 否则直接使用 classLoader去加载了
         return classLoader.loadClass(className);
     }
 

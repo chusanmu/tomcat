@@ -59,6 +59,8 @@ public interface Loader {
 
 
     /**
+     * TODO: 这个容器用的类加载器
+     *
      * @return the Java class loader to be used by this Container.
      */
     public ClassLoader getClassLoader();

@@ -1042,6 +1042,7 @@ public class StandardWrapper extends ContainerBase
                     (sm.getString("standardWrapper.notClass", getName()));
             }
 
+            // TODO: DefaultInstanceManager 其 内部持有一个classLoader，其实就是之前创建的webAppClassLoader
             InstanceManager instanceManager = ((StandardContext)getParent()).getInstanceManager();
             try {
                 servlet = (Servlet) instanceManager.newInstance(servletClass);
@@ -1091,6 +1092,7 @@ public class StandardWrapper extends ContainerBase
                 singleThreadModel = true;
             }
 
+            // TODO: 初始化servlet
             initServlet(servlet);
 
             fireContainerEvent("load", this);
@@ -1113,6 +1115,12 @@ public class StandardWrapper extends ContainerBase
     }
 
 
+    /**
+     * TODO: 初始化servlet，执行servlet的init方法
+     *
+     * @param servlet
+     * @throws ServletException
+     */
     private synchronized void initServlet(Servlet servlet)
             throws ServletException {
 

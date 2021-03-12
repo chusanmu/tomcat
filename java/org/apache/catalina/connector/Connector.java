@@ -115,6 +115,7 @@ public class Connector extends LifecycleMBeanBase  {
 
 
     /**
+     * TODO: 这个connector所关联的service
      * The <code>Service</code> we are associated with (if any).
      */
     protected Service service = null;

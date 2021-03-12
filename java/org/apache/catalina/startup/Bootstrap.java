@@ -139,14 +139,20 @@ public final class Bootstrap {
     // -------------------------------------------------------- Private Methods
 
 
+    /**
+     * TODO: 初始化类加载器啊
+     */
     private void initClassLoaders() {
         try {
+            // TODO: 创建commonLoader类加载器
             commonLoader = createClassLoader("common", null);
             if (commonLoader == null) {
                 // no config file, default to this loader - we might be in a 'single' env.
                 commonLoader = this.getClass().getClassLoader();
             }
+            // TODO: 创建catalinaLoader类加载器 以commonLoader类加载器为父加载器
             catalinaLoader = createClassLoader("server", commonLoader);
+            // TODO: 创建 sharedLoader 类加载器，以commonLoader类加载器为父加载器
             sharedLoader = createClassLoader("shared", commonLoader);
         } catch (Throwable t) {
             handleThrowable(t);

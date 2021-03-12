@@ -1244,7 +1244,7 @@ public abstract class AbstractEndpoint<S,U> {
             bindWithCleanup();
             bindState = BindState.BOUND_ON_START;
         }
-        // TODO: 调用startInternal，会添加一个任务Acceptor
+        // TODO: 调用startInternal，创建worker线程池，poller线程 以及 添加一个任务Acceptor
         startInternal();
     }
 

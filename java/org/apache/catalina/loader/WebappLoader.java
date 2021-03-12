@@ -392,8 +392,9 @@ public class WebappLoader extends LifecycleMBeanBase
 
         // Construct a class loader based on our current repositories list
         try {
-
+            // TODO: 创建了一个webAppClassLoader, 专门用于加载当前应用的资源
             classLoader = createClassLoader();
+            // TODO: 设置需要加载的资源
             classLoader.setResources(context.getResources());
             classLoader.setDelegate(this.delegate);
 

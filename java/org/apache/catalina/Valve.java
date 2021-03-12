@@ -24,6 +24,8 @@ import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
 
 /**
+ * TODO: pipeline上的组件，一个pipeline有多个valve组成
+ *
  * <p>A <b>Valve</b> is a request processing component associated with a
  * particular Container.  A series of Valves are generally associated with
  * each other into a Pipeline.  The detailed contract for a Valve is included
@@ -43,6 +45,8 @@ public interface Valve {
     //-------------------------------------------------------------- Properties
 
     /**
+     * TODO: 获取下一个valve
+     *
      * @return the next Valve in the pipeline containing this Valve, if any.
      */
     public Valve getNext();
