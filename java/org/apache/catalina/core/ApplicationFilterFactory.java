@@ -118,10 +118,12 @@ public final class ApplicationFilterFactory {
         }
 
         // Add filters that match on servlet name second
+        // TODO: 根据servlet的名字，决定是否匹配，然后添加到过滤器链上.
         for (FilterMap filterMap : filterMaps) {
             if (!matchDispatcher(filterMap, dispatcher)) {
                 continue;
             }
+            // TODO: 如果不匹配，就直接continue掉
             if (!matchFiltersServlet(filterMap, servletName))
                 continue;
             ApplicationFilterConfig filterConfig = (ApplicationFilterConfig)

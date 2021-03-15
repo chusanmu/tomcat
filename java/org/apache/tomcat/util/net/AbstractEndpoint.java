@@ -1099,6 +1099,7 @@ public abstract class AbstractEndpoint<S,U> {
                 return false;
             }
             SocketProcessorBase<S> sc = null;
+            // TODO: 如果缓存中不为空，那么直接从缓存栈中弹出来一个
             if (processorCache != null) {
                 sc = processorCache.pop();
             }
@@ -1106,6 +1107,7 @@ public abstract class AbstractEndpoint<S,U> {
             if (sc == null) {
                 sc = createSocketProcessor(socketWrapper, event);
             } else {
+                // TODO: 从缓存栈中取到了socketProcessor，那么就进行重置
                 sc.reset(socketWrapper, event);
             }
             // TODO: 拿到tomcat处理socket的线程池， exec-xx 这个线程池

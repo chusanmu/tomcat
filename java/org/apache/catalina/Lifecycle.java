@@ -88,6 +88,8 @@ public interface Lifecycle {
 
     // ----------------------------------------------------- Manifest Constants
 
+    /* ---------------- 整个生命周期 所涉及的一些事件 -------------- */
+
 
     /**
      * The LifecycleEvent type for the "component before init" event.

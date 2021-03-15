@@ -256,6 +256,7 @@ public class Http11Processor extends AbstractProcessor {
                 sendfileState == SendfileState.DONE && !protocol.isPaused()) {
 
             // Parsing the request header
+            // TODO: 解析 请求头， 内部方法会逐行的解析请求头
             try {
                 if (!inputBuffer.parseRequestLine(keptAlive, protocol.getConnectionTimeout(),
                         protocol.getKeepAliveTimeout())) {
@@ -269,6 +270,7 @@ public class Http11Processor extends AbstractProcessor {
                 // Process the Protocol component of the request line
                 // Need to know if this is an HTTP 0.9 request before trying to
                 // parse headers.
+                // TODO: 准备请求的协议
                 prepareRequestProtocol();
 
                 if (protocol.isPaused()) {
@@ -280,6 +282,7 @@ public class Http11Processor extends AbstractProcessor {
                     // Set this every time in case limit has been changed via JMX
                     request.getMimeHeaders().setLimit(protocol.getMaxHeaderCount());
                     // Don't parse headers for HTTP/0.9
+                    // TODO: 如果是 http/0.9的话 就不再去解析请求头了
                     if (!http09 && !inputBuffer.parseHeaders()) {
                         // We've read part of the request, don't recycle it
                         // instead associate it with the socket
@@ -314,11 +317,13 @@ public class Http11Processor extends AbstractProcessor {
                     }
                 }
                 // 400 - Bad Request
+                // TODO: 出异常了，表示客户端请求错误，直接设置响应码为400
                 response.setStatus(400);
                 setErrorState(ErrorState.CLOSE_CLEAN, t);
             }
 
             // Has an upgrade been requested?
+            // TODO: 看看是否需要请求升级，例如 webSocket，客户端和服务端双向通信，就需要升级连接
             if (isConnectionToken(request.getMimeHeaders(), "upgrade")) {
                 // Check the protocol
                 String requestedProtocol = request.getHeader("Upgrade");

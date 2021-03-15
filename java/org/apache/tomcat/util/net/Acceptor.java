@@ -84,6 +84,7 @@ public class Acceptor<U> implements Runnable {
             if (!endpoint.isRunning()) {
                 break;
             }
+            // TODO: 标记当前状态为正在运行
             state = AcceptorState.RUNNING;
 
             try {
@@ -124,11 +125,12 @@ public class Acceptor<U> implements Runnable {
                 if (endpoint.isRunning() && !endpoint.isPaused()) {
                     // setSocketOptions() will hand the socket off to
                     // an appropriate processor if successful
-                    // TODO: 设置socket连接
+                    // TODO: 设置socket连接, 如果失败了，就把当前的socket关闭掉
                     if (!endpoint.setSocketOptions(socket)) {
                         endpoint.closeSocket(socket);
                     }
                 } else {
+                    // TODO: 如果endpoint不再是运行状态，或者是暂停状态，那就直接销毁这个socket
                     endpoint.destroySocket(socket);
                 }
             } catch (Throwable t) {
@@ -151,6 +153,7 @@ public class Acceptor<U> implements Runnable {
                 }
             }
         }
+        // TODO: 标记为结束状态
         state = AcceptorState.ENDED;
     }
 

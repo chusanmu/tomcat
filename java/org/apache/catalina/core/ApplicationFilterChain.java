@@ -248,7 +248,7 @@ public final class ApplicationFilterChain implements FilterChain {
                                            args,
                                            principal);
             } else {
-                // TODO: 调用servlet实例的service方法
+                // TODO: 调用servlet实例的service方法， 接下来就是很熟悉的servlet中service方法的调用了.
                 servlet.service(request, response);
             }
         } catch (IOException | ServletException | RuntimeException e) {

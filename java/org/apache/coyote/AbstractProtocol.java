@@ -780,9 +780,9 @@ public abstract class AbstractProtocol<S> implements ProtocolHandler,
                 // Nothing to do. Socket has been closed.
                 return SocketState.CLOSED;
             }
-
+            // TODO: 取出来当前的socket
             S socket = wrapper.getSocket();
-
+            // TODO: 拿到当前的处理器
             Processor processor = (Processor) wrapper.getCurrentProcessor();
             if (getLog().isDebugEnabled()) {
                 getLog().debug(sm.getString("abstractConnectionHandler.connectionsGet",
@@ -851,12 +851,14 @@ public abstract class AbstractProtocol<S> implements ProtocolHandler,
                         }
                     }
                 }
+                // TODO: 如果这时候 processor 为空，则尝试从回收的Processors中弹出来一个
                 if (processor == null) {
                     processor = recycledProcessors.pop();
                     if (getLog().isDebugEnabled()) {
                         getLog().debug(sm.getString("abstractConnectionHandler.processorPop", processor));
                     }
                 }
+                // TODO: 如果还为空，那就直接创建一个吧
                 if (processor == null) {
                     processor = getProtocol().createProcessor();
                     register(processor);
@@ -869,10 +871,12 @@ public abstract class AbstractProtocol<S> implements ProtocolHandler,
                         wrapper.getSslSupport(getProtocol().getClientCertProvider()));
 
                 // Associate the processor with the connection
+                // TODO: 设置当前的processor
                 wrapper.setCurrentProcessor(processor);
 
                 SocketState state = SocketState.CLOSED;
                 do {
+                    // TODO: 利用processor去做处理
                     state = processor.process(wrapper, status);
 
                     if (state == SocketState.UPGRADING) {

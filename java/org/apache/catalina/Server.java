@@ -247,6 +247,8 @@ public interface Server extends Lifecycle {
 
 
     /**
+     * TODO: 一个server可以包含多个service
+     *
      * @return the set of Services defined within this Server.
      */
     public Service[] findServices();

@@ -407,9 +407,10 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
             // Allocate channel and wrapper
             NioChannel channel = null;
             if (nioChannels != null) {
-                // TODO: 尝试从缓存里面弹出来一个channel
+                // TODO: 尝试从缓存里面弹出来一个channel （NioChannel） NioChannel主要封装了socketChannel...
                 channel = nioChannels.pop();
             }
+            // TODO: 如果在nioChannels中没取到，这时候就需要创建一个了
             if (channel == null) {
                 SocketBufferHandler bufhandler = new SocketBufferHandler(
                         socketProperties.getAppReadBufSize(),
@@ -418,6 +419,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
                 if (isSSLEnabled()) {
                     channel = new SecureNioChannel(bufhandler, selectorPool, this);
                 } else {
+                    // TODO: 创建一个NioChannel
                     channel = new NioChannel(bufhandler);
                 }
             }
@@ -425,6 +427,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
             NioSocketWrapper newWrapper = new NioSocketWrapper(channel, this);
             // TODO: channel重新设置，避免它是脏的，重新设置了socket
             channel.reset(socket, newWrapper);
+            // TODO: 缓存到connections中
             connections.put(socket, newWrapper);
             socketWrapper = newWrapper;
 
@@ -533,6 +536,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
     }
 
     /**
+     * TODO: 用于监听events，添加events，然后处理产生事件的连接
      * Poller class.
      */
     public class Poller implements Runnable {
@@ -611,6 +615,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
         }
 
         /**
+         * TODO: 如果存在事件，会进行标记存在事件，然后判断感兴趣的事件，注册到当前poller的selector上
          * Processes events in the event queue of the Poller.
          *
          * @return <code>true</code> if some events were processed,
@@ -737,19 +742,21 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
                 try {
                     // TODO: poller线程运行，消费events，如果没有关闭
                     if (!close) {
-                        // TODO: 第一步先看看有没有事件
+                        // TODO: 第一步先看看有没有事件, 如果存在事件，判断事件的感兴趣状态，然后注册事件到selector上面
                         hasEvents = events();
 
                         /* ---------------- 进行selector挑选 -------------- */
-
+                        // TODO: wakeupCounter 这个值默认是0，在addEvent的时候，会进行+1，这就意味着存在event.
                         if (wakeupCounter.getAndSet(-1) > 0) {
                             // TODO: 如果进到这里了，就采用非阻塞，立马select，意味着还需要去处理其他事情，所以就不阻塞了
                             // If we are here, means we have other stuff to do
                             // Do a non blocking select
                             keyCount = selector.selectNow();
                         } else {
+                            // TODO: 默认等1s
                             keyCount = selector.select(selectorTimeout);
                         }
+                        // TODO: 重置为0
                         wakeupCounter.set(0);
                     }
                     // TODO: 如果close了， 就关闭selector
@@ -779,6 +786,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
                     keyCount > 0 ? selector.selectedKeys().iterator() : null;
                 // Walk through the collection of ready keys and dispatch
                 // any active event.
+                // TODO: 逐个遍历 产生事件的keys
                 while (iterator != null && iterator.hasNext()) {
                     SelectionKey sk = iterator.next();
                     NioSocketWrapper socketWrapper = (NioSocketWrapper) sk.attachment();
@@ -802,6 +810,12 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
             getStopLatch().countDown();
         }
 
+        /**
+         * TODO: 处理感兴趣的keys
+         *
+         * @param sk
+         * @param socketWrapper
+         */
         protected void processKey(SelectionKey sk, NioSocketWrapper socketWrapper) {
             try {
                 // TODO: 如果close掉了，就取消掉这个selectionKey
@@ -1588,6 +1602,8 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
     // ---------------------------------------------- SocketProcessor Inner Class
 
     /**
+     * TODO: exec线程池 专门执行的任务
+     *
      * This class is the equivalent of the Worker, but will simply use in an
      * external Executor thread pool.
      */
@@ -1610,7 +1626,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
             try {
                 int handshake = -1;
                 try {
-                    // TODO: 如果已经握手完成
+                    // TODO: 如果已经握手完成，对于SSL连接，tomcat需要进行握手操作，这里如果是NIOChannel的话，直接返回true.
                     if (socket.isHandshakeComplete()) {
                         // No TLS handshaking required. Let the handler
                         // process this socket / event combination.
@@ -1621,6 +1637,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
                         // if the handshake failed.
                         handshake = -1;
                     } else {
+                        // TODO: SSL连接的话，会进行握手操作
                         handshake = socket.handshake(event == SocketEvent.OPEN_READ, event == SocketEvent.OPEN_WRITE);
                         // The handshake process reads/writes from/to the
                         // socket. status may therefore be OPEN_WRITE once
@@ -1637,10 +1654,12 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
                 } catch (CancelledKeyException ckx) {
                     handshake = -1;
                 }
+                // TODO: 说明握手成功了，NioChannel 会直接返回0
                 if (handshake == 0) {
                     SocketState state = SocketState.OPEN;
                     // Process the request from this socket
                     if (event == null) {
+                        // TODO: 处理来自此套接字的请求
                         state = getHandler().process(socketWrapper, SocketEvent.OPEN_READ);
                     } else {
                         state = getHandler().process(socketWrapper, event);

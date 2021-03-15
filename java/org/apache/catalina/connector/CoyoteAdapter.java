@@ -307,10 +307,12 @@ public class CoyoteAdapter implements Adapter {
     @Override
     public void service(org.apache.coyote.Request req, org.apache.coyote.Response res)
             throws Exception {
+        // TODO: 获得 request 和 response
 
         Request request = (Request) req.getNote(ADAPTER_NOTES);
         Response response = (Response) res.getNote(ADAPTER_NOTES);
 
+        // TODO: 如果request为null
         if (request == null) {
             // Create objects
             // TODO: 直接创建一个request对象
@@ -340,11 +342,13 @@ public class CoyoteAdapter implements Adapter {
         boolean async = false;
         boolean postParseSuccess = false;
 
+        // TODO: 设置当前处理线程的名字
         req.getRequestProcessor().setWorkerThreadName(THREAD_NAME.get());
 
         try {
             // Parse and set Catalina and configuration specific
             // request parameters
+            // TODO: 设置配置请求参数
             postParseSuccess = postParseRequest(req, request, res, response);
             if (postParseSuccess) {
                 //check valves if we support async
